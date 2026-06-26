@@ -1,0 +1,207 @@
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: #dae0e6;
+      color: #1c1c1c;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #ff4500;
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header h1 { font-size: 20px; font-weight: 700; }
+
+    .search-bar {
+      display: flex;
+      gap: 8px;
+      flex: 1;
+      max-width: 500px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 20px;
+      border: none;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-bar select {
+      padding: 8px 10px;
+      border-radius: 20px;
+      border: none;
+      font-size: 13px;
+      background: white;
+      cursor: pointer;
+    }
+
+    .search-bar button {
+      padding: 8px 16px;
+      background: white;
+      color: #ff4500;
+      border: none;
+      border-radius: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .search-bar button:hover { background: #f0f0f0; }
+
+    main {
+      max-width: 740px;
+      margin: 20px auto;
+      padding: 0 12px;
+    }
+
+    .subreddit-info {
+      background: white;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .subreddit-info strong { color: #ff4500; font-size: 16px; }
+
+    .post-card {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 0;
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+
+    .post-card:hover { border-color: #898989; }
+
+    .vote-col {
+      background: #f8f9fa;
+      width: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 4px;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #878a8c;
+    }
+
+    .vote-col span { font-size: 12px; }
+
+    .post-body {
+      flex: 1;
+      padding: 10px 12px;
+    }
+
+    .post-meta {
+      font-size: 11px;
+      color: #878a8c;
+      margin-bottom: 6px;
+    }
+
+    .post-meta a {
+      color: #0079d3;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .post-meta a:hover { text-decoration: underline; }
+
+    .post-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #222;
+      text-decoration: none;
+      display: block;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .post-title:hover { color: #ff4500; }
+
+    .post-thumbnail {
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
+      margin: 6px 12px 6px 0;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .post-actions {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+      color: #878a8c;
+    }
+
+    .post-actions span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+
+    .post-actions span:hover { background: #f0f0f0; }
+
+    .flair {
+      display: inline-block;
+      background: #e8f0fe;
+      color: #1a73e8;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-bottom: 6px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+      font-size: 15px;
+    }
+
+    .error {
+      background: #fff0f0;
+      border: 1px solid #ffcccc;
+      border-radius: 8px;
+      padding: 16px;
+      color: #cc0000;
+      margin-bottom: 12px;
+    }
+
+    .load-more {
+      width: 100%;
+      padding: 12px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #0079d3;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .load-more:hover { background: #f0f8ff; }
+
+    .post-image-wrap {
+      display: flex;
+      align-items: flex-start;
+    }

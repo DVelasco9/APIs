@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reddit Reader</title>
+
+  <link rel="stylesheet" href="social.css">
+</head>
+<header>
+  <h1>Reddit</h1>
+  <div class="search-bar">
+    <input type="text" id="subredditInput" placeholder="Escribe un subreddit..." value="programming" />
+    <select id="sortSelect">
+      <option value="hot">Hot</option>
+      <option value="new">New</option>
+      <option value="top">Top</option>
+      <option value="rising">Rising</option>
+    </select>
+    <button onclick="loadSubreddit()">Buscar</button>
+  </div>
+</header>
+
+<main>
+  <div id="output"></div>
+</main>
+
+  <script src="social.js"></script>
+
+</html>
