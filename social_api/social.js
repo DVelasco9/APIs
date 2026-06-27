@@ -1,51 +1,45 @@
-let after = null;
 let currentSubreddit = 'programming';
 let currentSort = 'hot';
 
-const PROXIES = [
-  'https://api.allorigins.win/raw?url=',
-  'https://corsproxy.org/?',
-  'https://corsproxy.io/?',
-];
-
-function formatNum(n) {
-  if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
-  return n;
-}
-
-function timeAgo(utc) {
-  const diff = Math.floor((Date.now() / 1000) - utc);
+// Calcula el tiempo transcurrido desde la publicación
+function timeAgo(dateString) {
+  const date = new Date(dateString);
+  const diff = Math.floor((Date.now() - date.getTime()) / 1000);
+  
   if (diff < 60) return `${diff}s`;
   if (diff < 3600) return `${Math.floor(diff / 60)}m`;
   if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
   return `${Math.floor(diff / 86400)}d`;
 }
 
-function renderPost(post) {
-  const d = post.data;
-  const thumb = d.thumbnail && d.thumbnail.startsWith('http') ? d.thumbnail : null;
-  const flair = d.link_flair_text ? `<span class="flair">${d.link_flair_text}</span><br>` : '';
+// Extrae la imagen del contenido HTML si existe (ya que el RSS la esconde ahí)
+function extractImage(htmlContent) {
+  const match = htmlContent.match(/<img[^>]+src="([^">]+)"/);
+  return match ? match[1] : null;
+}
 
+// Renderiza la tarjeta del post usando los datos del RSS
+function renderPost(item, sub) {
+  const thumb = item.thumbnail || extractImage(item.content);
+  
   return `
     <div class="post-card">
       <div class="vote-col">
         ▲
-        <span>${formatNum(d.score)}</span>
+        <span>•</span>
         ▼
       </div>
       <div class="post-body">
         <div class="post-meta">
-          <a href="https://reddit.com/r/${d.subreddit}" target="_blank">r/${d.subreddit}</a>
-          · u/${d.author} · ${timeAgo(d.created_utc)}
+          <a href="https://reddit.com/r/${sub}" target="_blank">r/${sub}</a>
+          · u/${item.author || 'Anónimo'} · ${timeAgo(item.pubDate)}
         </div>
-        ${flair}
+        
         <div class="post-image-wrap">
-          <div style="flex:1">
-            <a class="post-title" href="https://reddit.com${d.permalink}" target="_blank">${d.title}</a>
+          <div style="flex:1; min-width:0;">
+            <a class="post-title" href="${item.link}" target="_blank">${item.title}</a>
             <div class="post-actions">
-              <span>💬 ${formatNum(d.num_comments)} comentarios</span>
-              <span>🔗 <a href="${d.url}" target="_blank" style="color:inherit;text-decoration:none">Link</a></span>
-              ${!d.is_self ? `<span style="color:#0079d3">↗ ${d.domain}</span>` : ''}
+              <span>🔗 <a href="${item.link}" target="_blank" style="color:inherit;text-decoration:none">Ver en Reddit</a></span>
             </div>
           </div>
           ${thumb ? `<img class="post-thumbnail" src="${thumb}" alt="thumbnail" onerror="this.style.display='none'"/>` : ''}
@@ -55,71 +49,58 @@ function renderPost(post) {
   `;
 }
 
-async function fetchWithFallback(redditUrl) {
-  for (const proxy of PROXIES) {
-    try {
-      const url = proxy + encodeURIComponent(redditUrl);
-      const res = await fetch(url);
-      const text = await res.text();
+// Función principal usando la puerta trasera (RSS -> JSON)
+// social.js - Versión optimizada para saltar bloqueos de Reddit
 
-      if (text.trim().startsWith('<')) continue;
-
-      return JSON.parse(text);
-    } catch (e) {
-      continue;
-    }
-  }
-  return null;
-}
-
-async function loadSubreddit(loadMore = false) {
+async function loadSubreddit() {
   const input = document.getElementById('subredditInput').value.trim();
   const sort = document.getElementById('sortSelect').value;
   const output = document.getElementById('output');
+  const subreddit = input || 'programming';
 
-  if (!loadMore) {
-    currentSubreddit = input;
-    currentSort = sort;
-    after = null;
-    output.innerHTML = '<div class="loading">Cargando posts...</div>';
-  }
+  output.innerHTML = '<div class="loading">Conectando con Reddit...</div>';
 
-  let redditUrl = `https://www.reddit.com/r/${currentSubreddit}/${currentSort}.json?limit=25`;
-  if (after) redditUrl += `&after=${after}`;
+  // Usamos una API de lectura (rss2json) que convierte el feed de Reddit 
+  // en un formato JSON limpio que sí permite CORS.
+  const rssUrl = `https://www.reddit.com/r/${subreddit}/${sort}.rss`;
+  const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
 
-  const json = await fetchWithFallback(redditUrl);
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
 
-  if (!json) {
-    const msg = '<div class="error">❌ No se pudo conectar con Reddit. Intenta de nuevo más tarde.</div>';
-    if (!loadMore) output.innerHTML = msg;
-    else output.innerHTML += msg;
-    return;
-  }
+    if (data.status !== 'ok') {
+      throw new Error('No se pudo obtener el contenido');
+    }
 
-  const posts = json.data.children;
-  after = json.data.after;
+    // Renderizamos el resultado
+    output.innerHTML = `<h3>r/${subreddit} - ${sort}</h3>`;
+    data.items.forEach(post => {
+      output.insertAdjacentHTML('beforeend', `
+        <div class="post-card">
+          <h4>${post.title}</h4>
+          <a href="${post.link}" target="_blank">Leer en Reddit</a>
+        </div>
+      `);
+    });
 
-  if (!loadMore) {
-    output.innerHTML = `
-      <div class="subreddit-info">
-        <strong>r/${currentSubreddit}</strong> · ${posts.length} posts · ordenado por <em>${currentSort}</em>
-      </div>
-    `;
-  } else {
-    document.getElementById('loadMoreBtn')?.remove();
-  }
-
-  posts.forEach(p => {
-    output.innerHTML += renderPost(p);
-  });
-
-  if (after) {
-    output.innerHTML += `<button class="load-more" id="loadMoreBtn" onclick="loadSubreddit(true)">Cargar más posts</button>`;
+  } catch (e) {
+    output.innerHTML = `<div class="error">❌ No pudimos conectar con Reddit. Por favor, revisa el nombre del subreddit.</div>`;
   }
 }
+
+// Escuchador para el botón Buscar
+document.getElementById('buscarBtn').addEventListener('click', loadSubreddit);
+
+// --- ESCUCHADORES DE EVENTOS ---
 
 document.getElementById('subredditInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') loadSubreddit();
 });
 
+document.getElementById('sortSelect').addEventListener('change', () => {
+  loadSubreddit();
+});
+
+// Carga inicial automática
 loadSubreddit();
