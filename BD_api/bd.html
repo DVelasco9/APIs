@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gamelog</title>
+
+  <link rel="stylesheet" href="bd.css">
+
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>game<span>log</span></h1>
+    <p>tu lista personal de juegos pendientes</p>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Busca un juego... ej: Elden Ring" />
+    <button onclick="searchGames()">🔍 Buscar</button>
+  </div>
+
+  <div id="msgBox"></div>
+
+  <div id="resultsSection" style="display:none;">
+    <p class="section-title">resultados</p>
+    <div class="results-grid" id="resultsGrid"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="setTab('pending', this)">
+      Pendientes <span class="tab-count" id="cnt-pending">0</span>
+    </button>
+    <button class="tab" onclick="setTab('playing', this)">
+      Jugando <span class="tab-count" id="cnt-playing">0</span>
+    </button>
+    <button class="tab" onclick="setTab('done', this)">
+      Completados <span class="tab-count" id="cnt-done">0</span>
+    </button>
+  </div>
+
+  <div class="list" id="gameList"></div>
+</div>
+
+  <script src="config.js"></script>
+  <script src="bd.js"></script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: #0d0d0f;
+  min-height: 100vh;
+  color: #e0e0e0;
+  font-family: sans-serif;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.header h1 span {
+  color: #a78bfa;
+}
+
+.header p {
+  color: #666;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #1a1a22;
+  border: 1px solid #2e2e3e;
+  color: #e0e0e0;
+  font-size: 15px;
+  outline: none;
+}
+
+.search-bar input:focus {
+  border-color: #7c3aed;
+}
+
+.search-bar input::placeholder {
+  color: #444;
+}
+
+.search-bar button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: #7c3aed;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background: #6d28d9;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.game-card {
+  background: #1a1a22;
+  border: 1px solid #2e2e3e;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.game-card:hover {
+  border-color: #7c3aed;
+  transform: translateY(-2px);
+}
+
+.game-card img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  display: block;
+  background: #111;
+}
+
+.game-card .info {
+  padding: 8px 10px;
+}
+
+.game-card .info .name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #e0e0e0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.game-card .info .meta {
+  font-size: 11px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.game-card .add-btns {
+  display: flex;
+  gap: 4px;
+  padding: 0 8px 8px;
+}
+
+.add-btns button {
+  flex: 1;
+  padding: 4px;
+  border-radius: 5px;
+  border: none;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.btn-pending { background: #312e81; color: #a78bfa; }
+.btn-playing { background: #064e3b; color: #34d399; }
+.btn-done    { background: #1e1b4b; color: #818cf8; }
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1rem;
+}
+
+.tab {
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1px solid #2e2e3e;
+  background: transparent;
+  color: #888;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #1a1a22;
+  color: #a78bfa;
+  border-color: #7c3aed;
+}
+
+.tab-count {
+  display: inline-block;
+  background: #2e2e3e;
+  color: #888;
+  border-radius: 20px;
+  padding: 1px 7px;
+  font-size: 11px;
+  margin-left: 4px;
+}
+
+.tab.active .tab-count {
+  background: #4c1d95;
+  color: #c4b5fd;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.list-item {
+  background: #1a1a22;
+  border: 1px solid #2e2e3e;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+}
+
+.list-item img {
+  width: 60px;
+  height: 34px;
+  object-fit: cover;
+  border-radius: 5px;
+  background: #111;
+}
+
+.list-item .name {
+  flex: 1;
+  font-size: 14px;
+  color: #e0e0e0;
+}
+
+.list-item .genre {
+  font-size: 12px;
+  color: #555;
+}
+
+.list-item .remove {
+  background: transparent;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+}
+
+.list-item .remove:hover {
+  color: #ef4444;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-pending { background: #a78bfa; }
+.dot-playing { background: #34d399; }
+.dot-done    { background: #818cf8; }
+
+.empty {
+  text-align: center;
+  padding: 2rem;
+  color: #444;
+  font-size: 14px;
+}
+
+.section-title {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.msg {
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.msg.error {
+  background: #2d0a0a;
+  color: #f87171;
+  border: 1px solid #7f1d1d;
+}
+
+.msg.info {
+  background: #1a1a22;
+  color: #888;
+}
